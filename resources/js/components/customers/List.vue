@@ -28,6 +28,26 @@
         </template>
       </tbody>
     </table>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" :class="{ disabled: !$store.state.customer.links.prev }">
+          <a class="page-link" href="#" @click.prevent="paginate($store.state.customer.links.first)" tabindex="-1">First</a>
+        </li>
+        <li class="page-item" :class="{ disabled: !$store.state.customer.links.prev }">
+          <a class="page-link" href="#" @click.prevent="paginate($store.state.customer.links.prev)" tabindex="-1"><<</a>
+        </li>
+        <!-- <li class="page-item" v-for="(item, index) in paginationItem" :key="index">
+          <a class="page-link" href="#" @click.prevent="getcustomers(index + 1)">{{ index + 1 }}</a>
+        </li> -->
+        <li class="page-item disabled"> <a class="page-link" href="#"> {{ $store.state.customer.meta.current_page }} of {{ $store.state.customer.meta.last_page }} </a> </li>
+        <li class="page-item" :class="{ disabled: !$store.state.customer.links.next }">
+          <a class="page-link" href="#" @click.prevent="paginate($store.state.customer.links.next)" tabindex="-1">>></a>
+        </li>
+        <li class="page-item" :class="{ disabled: !$store.state.customer.links.next }">
+          <a class="page-link" href="#" @click.prevent="paginate($store.state.customer.links.last)" tabindex="-1">Last</a>
+        </li>
+      </ul>
+    </nav>      
   </div>
 </template>
 
@@ -37,7 +57,8 @@
     name: 'list',
     methods: {
       ...mapActions([
-        'getCustomers'
+        'getCustomers',
+        'paginate'
       ])
     },
     computed: {

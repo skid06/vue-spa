@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Customer;
-use App\Http\Requests\CreateCustomerRequest;
-use App\Http\Resources\CustomerCollection;
+use App\Http\Resources\TaskCollection;
+use App\Task;
 
-class CustomersController extends Controller
+class TasksController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,12 +15,9 @@ class CustomersController extends Controller
      */
     public function index()
     {
-        //
-        $customers = Customer::with('tasks','notes')->paginate(5);
-        return new CustomerCollection($customers);
-        // return response()->json([
-        //     'customers' => $customers
-        // ], 200);
+        $tasks = Task::with('customer', 'notes')->paginate(10);
+
+        return new TaskCollection($tasks);
     }
 
     /**
@@ -40,13 +36,9 @@ class CustomersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateCustomerRequest $request)
+    public function store(Request $request)
     {
-        $customer = Customer::create($request->only(['name', 'email', 'phone', 'website']));
-        return new CustomerCollection($customer);
-        // return response()->json([
-        //     'customer' => $customer
-        // ], 200);
+        //
     }
 
     /**
@@ -57,11 +49,7 @@ class CustomersController extends Controller
      */
     public function show($id)
     {
-        $customer = Customer::where('id', $id)->first();
-        return new CustomerCollection($customer);
-        // return response()->json([
-        //     'customer' => $customer
-        // ], 200);
+        //
     }
 
     /**

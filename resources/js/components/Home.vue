@@ -1,7 +1,15 @@
 <template>
-    <div id="home">
-        <h3>Home</h3>
-        <h5> {{ welcome }} </h5>
+    <div class="container" id="home">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+            <div class="card card-default">
+                <div class="card-header">Home</div>
+                <div class="card-body">
+                <h5> {{ welcome }} </h5>
+                </div>
+            </div>
+            </div>
+        </div>
     </div>
 </template>
 

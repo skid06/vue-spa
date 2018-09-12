@@ -1,7 +1,6 @@
-
 export default {
   state: {
-    customers: [],
+    tasks: [],
     links:{
       first: null,
       last: null,
@@ -16,25 +15,33 @@ export default {
       per_page: null,
       to: null,
       total: null
-    }    
+    }
   },
   getters: {
-    customers(state) {
-      return state.customers
-    }                  
+    tasks(state) {
+      return state.tasks
+    },
+    tasksLength(state) {
+      return state.tasks.length
+    },    
+    paginationItem(state) {
+      let total
+      return total = state.meta.total / state.meta.per_page
+    }       
   },
   actions: {
-    getCustomers(context, page){
-      let url = null
+    getTasks({commit}, page){
+      console.log('hitting getTasks()')
+      let url
       if (page == null) {
-        url = '/api/customers'
+        url = '/api/tasks'
       } else {
-        url = `/api/customers?page=${page}`
+        url = `/api/tasks?page=${page}`
       }
       axios.get(url)
       .then(response => {
         console.log(response.data)
-        context.commit('getCustomers', response.data)
+        commit('getTasks', response.data)
       })
       .catch(err => console.log(err))
     },
@@ -45,18 +52,18 @@ export default {
         commit('paginate', response.data)
       })
       .catch(err => console.log(err))      
-    }      
+    }     
   },
   mutations: {
-    getCustomers(state, customers){
-      state.customers = customers.data
-      state.links = customers.links
-      state.meta = customers.meta        
+    getTasks(state, tasks){
+      state.tasks = tasks.data
+      state.links = tasks.links
+      state.meta = tasks.meta
     },
-    paginate(state, customers) {
-      state.customers = customers.data
-      state.links = customers.links
-      state.meta = customers.meta    
-    }     
+    paginate(state, tasks) {
+      state.tasks = tasks.data
+      state.links = tasks.links
+      state.meta = tasks.meta    
+    } 
   }
 }

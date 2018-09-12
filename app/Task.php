@@ -11,7 +11,7 @@ class Task extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function comments(){
-        return $this->hasMany(Comment::class);
+    public function notes(){
+        return $this->hasMany(Note::class);
     }
 }

@@ -10,9 +10,10 @@
           <ul class="navbar-nav ml-auto">
             <template v-if="!currentUser">
               <li><router-link to="/login" class="nav-link">Login</router-link></li>
-              <li><router-link to="/register" class="nav-link">Register</router-link></li>
+              <!-- <li><router-link to="/register" class="nav-link">Register</router-link></li> -->
             </template>
             <template v-else>
+              <li><router-link to="/tasks" class="nav-link">Projects</router-link></li>
               <li><router-link to="/customers" class="nav-link">Customers</router-link></li>
               <li class="nav-item dropdown">
                 <a href="#" id="navbarDropdown" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
