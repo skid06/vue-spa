@@ -19,7 +19,7 @@ class TaskTableSeeder extends Seeder
 
         foreach(range(1, 50) as $i) {
             Task::create([
-                'name' => $faker->name,
+                'name' => $faker->company,
                 'status' => $faker->randomElement(['Done', 'Working', 'Open', 'Pending', 'Closed']),
                 'contact_name' => $faker->name,
                 'contact_phone' => $faker->phoneNumber,

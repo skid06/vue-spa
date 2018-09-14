@@ -42,8 +42,8 @@ class CustomersController extends Controller
      */
     public function store(CreateCustomerRequest $request)
     {
-        $customer = Customer::create($request->only(['name', 'email', 'phone', 'website']));
-        return new CustomerCollection($customer);
+        return $customer = Customer::create($request->only(['name', 'email', 'phone', 'website']));
+        // return new CustomerCollection($customer);
         // return response()->json([
         //     'customer' => $customer
         // ], 200);
@@ -57,8 +57,8 @@ class CustomersController extends Controller
      */
     public function show($id)
     {
-        $customer = Customer::where('id', $id)->first();
-        return new CustomerCollection($customer);
+        return $customer = Customer::where('id', $id)->first();
+        // return new CustomerCollection($customer);
         // return response()->json([
         //     'customer' => $customer
         // ], 200);

@@ -53221,7 +53221,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   mounted: function mounted() {
     this.getCustomers();
 
-    if (this.customers.length) {
+    if (!this.customers.length) {
       return;
     }
   }
@@ -53411,7 +53411,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Phone")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Actions")])
+      _c("th", [_vm._v("Activity")])
     ])
   },
   function() {
@@ -53959,7 +53959,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'view',
+  name: 'view-customer',
   created: function created() {
     var _this = this;
 
@@ -53969,7 +53969,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       });
     } else {
       axios.get('/api/customers/' + this.$route.params.id).then(function (response) {
-        _this.customer = response.data.customer;
+        _this.customer = response.data;
       });
     }
   },
@@ -54369,7 +54369,7 @@ var render = function() {
       _c(
         "tbody",
         [
-          !_vm.tasksLength
+          !_vm.tasks.length
             ? [_vm._m(1)]
             : _vm._l(_vm.tasks, function(task) {
                 return _c("tr", { key: task.id }, [
@@ -54377,9 +54377,9 @@ var render = function() {
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(task.status))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(task.contact_name))]),
-                  _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(task.contact_phone))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(task.contact_name))]),
                   _vm._v(" "),
                   _c(
                     "td",
@@ -54686,27 +54686,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'new',
   data: function data() {
     return {
-      customer: {
+      task: {
         name: '',
-        email: '',
-        phone: '',
-        website: ''
+        status: '',
+        contact_name: '',
+        contact_phone: '',
+        website: '',
+        cost: ''
       },
       errors: null
     };
   },
 
-  computed: {
-    currentUser: function currentUser() {
-      return this.$store.getters.currentUser;
-    }
-  },
   methods: {
     add: function add() {
       var _this = this;
@@ -54714,7 +54719,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.errors = null;
       var constraints = this.getConstraints();
 
-      var errors = __WEBPACK_IMPORTED_MODULE_0_validate_js___default()(this.customer, constraints);
+      var errors = __WEBPACK_IMPORTED_MODULE_0_validate_js___default()(this.task, constraints);
 
       if (errors) {
         this.errors = errors;
@@ -54734,17 +54739,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             message: 'Must be at least 3 characters long.'
           }
         },
-        email: {
+        status: {
           presence: true,
-          email: true
+          length: {
+            minimum: 3,
+            message: 'Must be at least 3 characters long.'
+          }
         },
-        phone: {
+        contact_name: {
+          presence: true,
+          length: {
+            minimum: 3,
+            message: 'Must be at least 3 characters long.'
+          }
+        },
+        contact_phone: {
           presence: true,
           numericality: true,
           length: {
             minimum: 10,
             message: 'Must be at least 10 digits long'
           }
+        },
+        cost: {
+          presence: true,
+          numericality: true
         },
         website: {
           presence: true,
@@ -54763,7 +54782,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "customer-new" }, [
+  return _c("div", { staticClass: "task-new" }, [
     _c(
       "form",
       {
@@ -54785,19 +54804,19 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.customer.name,
-                    expression: "customer.name"
+                    value: _vm.task.name,
+                    expression: "task.name"
                   }
                 ],
                 staticClass: "form-control",
                 attrs: { type: "text" },
-                domProps: { value: _vm.customer.name },
+                domProps: { value: _vm.task.name },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(_vm.customer, "name", $event.target.value)
+                    _vm.$set(_vm.task, "name", $event.target.value)
                   }
                 }
               })
@@ -54805,7 +54824,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("th", [_vm._v("Email")]),
+            _c("th", [_vm._v("Status")]),
             _vm._v(" "),
             _c("td", [
               _c("input", {
@@ -54813,19 +54832,19 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.customer.email,
-                    expression: "customer.email"
+                    value: _vm.task.status,
+                    expression: "task.status"
                   }
                 ],
                 staticClass: "form-control",
                 attrs: { type: "email" },
-                domProps: { value: _vm.customer.email },
+                domProps: { value: _vm.task.status },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(_vm.customer, "email", $event.target.value)
+                    _vm.$set(_vm.task, "status", $event.target.value)
                   }
                 }
               })
@@ -54833,7 +54852,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("th", [_vm._v("Phone")]),
+            _c("th", [_vm._v("Contact Name")]),
             _vm._v(" "),
             _c("td", [
               _c("input", {
@@ -54841,19 +54860,47 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.customer.phone,
-                    expression: "customer.phone"
+                    value: _vm.task.contact_name,
+                    expression: "task.contact_name"
                   }
                 ],
                 staticClass: "form-control",
                 attrs: { type: "text" },
-                domProps: { value: _vm.customer.phone },
+                domProps: { value: _vm.task.contact_name },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(_vm.customer, "phone", $event.target.value)
+                    _vm.$set(_vm.task, "contact_name", $event.target.value)
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("th", [_vm._v("Contact Phone")]),
+            _vm._v(" "),
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.task.contact_phone,
+                    expression: "task.contact_phone"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text" },
+                domProps: { value: _vm.task.contact_phone },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.task, "contact_phone", $event.target.value)
                   }
                 }
               })
@@ -54869,19 +54916,47 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.customer.website,
-                    expression: "customer.website"
+                    value: _vm.task.website,
+                    expression: "task.website"
                   }
                 ],
                 staticClass: "form-control",
                 attrs: { type: "text" },
-                domProps: { value: _vm.customer.website },
+                domProps: { value: _vm.task.website },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(_vm.customer, "website", $event.target.value)
+                    _vm.$set(_vm.task, "website", $event.target.value)
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("th", [_vm._v("Cost")]),
+            _vm._v(" "),
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.task.cost,
+                    expression: "task.cost"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text" },
+                domProps: { value: _vm.task.cost },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.task, "cost", $event.target.value)
                   }
                 }
               })
@@ -55025,7 +55100,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n.customer-view[data-v-7093aa31] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.user-img[data-v-7093aa31] {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.user-img img[data-v-7093aa31] {\n  max-width: 160px;\n}\n.user-info[data-v-7093aa31] {\n  -webkit-box-flex: 3;\n      -ms-flex: 3;\n          flex: 3;\n  overflow-x: scroll;\n}\n", ""]);
+exports.push([module.i, "\n.task-view[data-v-7093aa31] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.user-img[data-v-7093aa31] {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.user-img img[data-v-7093aa31] {\n  max-width: 160px;\n}\n.user-info[data-v-7093aa31] {\n  -webkit-box-flex: 3;\n      -ms-flex: 3;\n          flex: 3;\n  overflow-x: scroll;\n}\n\n", ""]);
 
 // exports
 
@@ -55071,34 +55146,42 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'view',
-  created: function created() {
-    var _this = this;
-
-    if (this.customers.length) {
-      this.customer = this.customers.find(function (customer) {
-        return customer.id == _this.$route.params.id;
-      });
-    } else {
-      axios.get('/api/customers/' + this.$route.params.id).then(function (response) {
-        _this.customer = response.data.customer;
-      });
-    }
-  },
+  name: 'view-task',
   data: function data() {
     return {
-      customer: null
+      task: {}
     };
   },
 
-  computed: _extends({
-    currentUser: function currentUser() {
-      return this.$store.getters.currentUser;
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapGetters */])(['tasks'])),
+  mounted: function mounted() {
+    var _this = this;
+
+    if (this.tasks.length) {
+      // console.log('if')
+      this.task = this.tasks.find(function (task) {
+        return task.id == _this.$route.params.id;
+      });
+      // console.log(this.task)
+    } else {
+      // console.log('else')
+      axios.get('/api/tasks/' + this.$route.params.id).then(function (response) {
+        console.log(response.data);
+        _this.task = response.data;
+        console.log(_this.task);
+      }).catch(function (err) {
+        console.log(err);
+        // console.log('else catch')
+      });
     }
-  }, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapGetters */])(['customers']))
+  }
 });
 
 /***/ }),
@@ -55109,9 +55192,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "customer-view" }, [
-    _vm._m(0),
-    _vm._v(" "),
+  return _c("div", { staticClass: "task-view" }, [
     _c(
       "div",
       { staticClass: "user-info" },
@@ -55120,56 +55201,50 @@ var render = function() {
           _c("tr", [
             _c("th", [_vm._v("ID")]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.customer.id))])
+            _c("td", [_vm._v(_vm._s(_vm.task.id))])
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("th", [_vm._v("Name")]),
+            _c("th", [_vm._v("Project Name")]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.customer.name))])
+            _c("td", [_vm._v(_vm._s(_vm.task.name))])
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("th", [_vm._v("Email")]),
+            _c("th", [_vm._v("Status")]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.customer.email))])
+            _c("td", [_vm._v(_vm._s(_vm.task.status))])
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("th", [_vm._v("Phone")]),
+            _c("th", [_vm._v("Contact Name")]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.customer.phone))])
+            _c("td", [_vm._v(_vm._s(_vm.task.contact_name))])
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("th", [_vm._v("Website")]),
+            _c("th", [_vm._v("Contact Phone")]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.customer.website))])
+            _c("td", [_vm._v(_vm._s(_vm.task.contact_phone))])
           ])
         ]),
         _vm._v(" "),
-        _c("router-link", { attrs: { to: "/customers" } }, [_vm._v("Back")])
+        _c(
+          "ul",
+          _vm._l(_vm.task.notes, function(note) {
+            return _c("li", { key: note.id }, [
+              _vm._v(_vm._s(note.notes) + " by: " + _vm._s(note.customer.name))
+            ])
+          })
+        ),
+        _vm._v(" "),
+        _c("router-link", { attrs: { to: "/tasks" } }, [_vm._v("Back")])
       ],
       1
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "user-img" }, [
-      _c("img", {
-        attrs: {
-          src:
-            "https://www.scottsdaleazestateplanning.com/wp-content/uploads/2018/01/user.png",
-          alt: ""
-        }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

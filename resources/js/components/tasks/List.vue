@@ -12,7 +12,7 @@
         <th>Actions</th>
       </thead>
       <tbody>
-        <template v-if="!tasksLength">
+        <template v-if="!tasks.length">
           <tr>
             <td colspan="4" class="text-center">No Tasks Available</td>
           </tr>
@@ -21,8 +21,8 @@
           <tr v-for="task in tasks" :key="task.id">
             <td>{{ task.name }}</td>
             <td>{{ task.status }}</td>
-            <td>{{ task.contact_name }}</td>
             <td>{{ task.contact_phone }}</td>
+            <td>{{ task.contact_name }}</td>
             <td>
               <router-link :to="`/tasks/${task.id}`">View</router-link>
             </td>

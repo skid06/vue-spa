@@ -8,7 +8,7 @@
         <th>Name</th>
         <th>Email</th>
         <th>Phone</th>
-        <th>Actions</th>
+        <th>Activity</th>
       </thead>
       <tbody>
         <template v-if="!customers.length">
@@ -69,7 +69,7 @@
     mounted() {
       this.getCustomers()
 
-      if(this.customers.length) {
+      if(!this.customers.length) {
         return
       }      
     }

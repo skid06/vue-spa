@@ -27,7 +27,7 @@ export default {
     paginationItem(state) {
       let total
       return total = state.meta.total / state.meta.per_page
-    }       
+    }
   },
   actions: {
     getTasks({commit}, page){

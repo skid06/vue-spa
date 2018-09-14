@@ -1,68 +1,78 @@
 <template>
-  <div class="customer-view">
-    <div class="user-img">
+  <div class="task-view">
+    <!-- <div class="user-img">
       <img src="https://www.scottsdaleazestateplanning.com/wp-content/uploads/2018/01/user.png" alt="">
-    </div>
+    </div> -->
     <div class="user-info">
       <table class="table">
         <tr>
           <th>ID</th>
-          <td>{{ customer.id }}</td>
+          <td>{{ task.id }}</td>
         </tr>
         <tr>
-          <th>Name</th>
-          <td>{{ customer.name }}</td>
+          <th>Project Name</th>
+          <td>{{ task.name }}</td>
         </tr>
         <tr>
-          <th>Email</th>
-          <td>{{ customer.email }}</td>
+          <th>Status</th>
+          <td>{{ task.status }}</td>
         </tr>
         <tr>
-          <th>Phone</th>
-          <td>{{ customer.phone }}</td>
+          <th>Contact Name</th>
+          <td>{{ task.contact_name }}</td>
         </tr>  
         <tr>
-          <th>Website</th>
-          <td>{{ customer.website }}</td>
+          <th>Contact Phone</th>
+          <td>{{ task.contact_phone }}</td>
         </tr>                              
       </table>
-      <router-link to="/customers">Back</router-link>
+      <ul>
+        <li v-for="note in task.notes" :key="note.id" >{{ note.notes }} by: {{ note.customer.name }}</li>
+      </ul>
+      <router-link to="/tasks">Back</router-link>
     </div>
+    
   </div>
 </template>
 <script>
-  import {mapGetters} from 'vuex'
+  import {mapGetters, mapActions} from 'vuex'
   export default {
-    name: 'view',
-    created() {
-      if(this.customers.length) {
-        this.customer = this.customers.find(customer => customer.id == this.$route.params.id)
-      }
-      else{
-        axios.get(`/api/customers/${this.$route.params.id}`)
-        .then(response => {
-          this.customer = response.data.customer
-        })
-      }
-    },
+    name: 'view-task',
     data() {
       return {
-        customer: null
+        task: {},
       }
-    },
+    },    
     computed: {
-      currentUser() {
-        return this.$store.getters.currentUser
-      },
       ...mapGetters([
-        'customers'
+        'tasks'
       ])
     },  
+    mounted() {
+      if(this.tasks.length) {
+        // console.log('if')
+        this.task = this.tasks.find(task => task.id == this.$route.params.id)
+        // console.log(this.task)
+      }
+      else{
+        // console.log('else')
+        axios.get(`/api/tasks/${this.$route.params.id}`)
+        .then(response => {
+          console.log(response.data)
+          this.task = response.data
+          console.log(this.task)
+        })
+        .catch(err => {
+          console.log(err)
+          // console.log('else catch')
+        })
+      }
+    }    
   }
 </script>
 
 <style scoped>
-.customer-view {
+.task-view {
   display: flex;
   align-items: center;
 }
@@ -76,4 +86,5 @@
   flex: 3;
   overflow-x: scroll;
 }
+
 </style>

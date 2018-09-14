@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\TaskCollection;
+use App\Http\Requests\CreateTaskRequest;
 use App\Task;
+use App\Customer;
+use Auth;
 
 class TasksController extends Controller
 {
@@ -15,7 +18,7 @@ class TasksController extends Controller
      */
     public function index()
     {
-        $tasks = Task::with('customer', 'notes')->paginate(10);
+        $tasks = Task::with('customer', 'notes.customer')->paginate(10);
 
         return new TaskCollection($tasks);
     }
@@ -27,7 +30,7 @@ class TasksController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -38,7 +41,24 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // return 'hello';
+        $userCreateTask = Auth::user()->tasks()->create([
+            'name' => $request->name,
+            'status' => $request->status,
+            'contact_name' => $request->contact_name,
+            'contact_phone' => $request->contact_phone,
+            'website'   => $request->website,
+            'cost' => $request->cost
+        ]);
+        return $userCreateTask;
+        // return Task::create([
+        //     'name' => $request->name,
+        //     'status' => $request->status,
+        //     'contact_name' => $request->contact_name,
+        //     'contact_phone' => $request->contact_phone,
+        //     'website'   => $request->website,
+        //     'cost' => $request->cost
+        // ]);
     }
 
     /**
@@ -49,7 +69,9 @@ class TasksController extends Controller
      */
     public function show($id)
     {
-        //
+        return $tasks = Task::with('customer', 'notes.customer')->where('id',$id)->first();
+
+        // return new TaskCollection($tasks);
     }
 
     /**
