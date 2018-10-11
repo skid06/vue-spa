@@ -11,9 +11,11 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
         <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
     </head>
-    <body>
+    <body> 
         <div id="app">
-            <main-app />
+            <v-app>
+                <main-app />
+            </v-app>
         </div>
         <script src="{{ asset('js/app.js') }}"></script>
     </body>
