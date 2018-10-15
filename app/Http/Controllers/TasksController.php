@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Resources\TaskCollection;
 use App\Http\Requests\CreateTaskRequest;
+use Illuminate\Validation\ValidationException;
 use App\Task;
-use App\Customer;
+use App\User;
 use Auth;
 
 class TasksController extends Controller
@@ -18,7 +19,7 @@ class TasksController extends Controller
      */
     public function index()
     {
-        $tasks = Task::with('customer', 'notes.customer')->paginate(10);
+        $tasks = Task::with('user', 'notes.user')->get();
 
         return new TaskCollection($tasks);
     }
@@ -42,23 +43,40 @@ class TasksController extends Controller
     public function store(Request $request)
     {
         // return 'hello';
-        $userCreateTask = Auth::user()->tasks()->create([
-            'name' => $request->name,
-            'status' => $request->status,
-            'contact_name' => $request->contact_name,
-            'contact_phone' => $request->contact_phone,
-            'website'   => $request->website,
-            'cost' => $request->cost
-        ]);
-        return $userCreateTask;
-        // return Task::create([
-        //     'name' => $request->name,
-        //     'status' => $request->status,
-        //     'contact_name' => $request->contact_name,
-        //     'contact_phone' => $request->contact_phone,
-        //     'website'   => $request->website,
-        //     'cost' => $request->cost
-        // ]);
+        try {
+            $request->validate([
+                'name' => 'required',
+                'status' => 'required',
+                'contact_name' => 'required|min:3',
+                'contact_phone' => 'required|min:11|numeric',
+                'website' => 'required|url',
+                'cost' => 'required|numeric'
+            ]); 
+
+            $userCreateTask = Auth::user()->tasks()->create([
+                'name' => $request->name,
+                'status' => $request->status,
+                'contact_name' => $request->contact_name,
+                'contact_phone' => $request->contact_phone,
+                'website'   => $request->website,
+                'cost' => $request->cost
+            ]);
+            
+            if($request->addComment) {
+                Auth::user()->notes()->create([
+                    'notes' => $request->notes,
+                    'task_id' => $userCreateTask->id
+                ]);
+            }
+            return $userCreateTask;
+        } catch(ValidationException $exception) {
+            return response()->json([
+                'status' => 'error',
+                'msg'    => 'Error',
+                'errors' => $exception->errors(),
+                ], 422
+            );        
+        }    
     }
 
     /**
@@ -69,7 +87,7 @@ class TasksController extends Controller
      */
     public function show($id)
     {
-        return $tasks = Task::with('customer', 'notes.customer')->where('id',$id)->first();
+        return $tasks = Task::with('user', 'notes.user')->where('id',$id)->first();
 
         // return new TaskCollection($tasks);
     }

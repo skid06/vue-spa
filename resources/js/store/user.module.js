@@ -1,7 +1,7 @@
 
 export default {
   state: {
-    customers: [],
+    users: [],
     links:{
       first: null,
       last: null,
@@ -16,25 +16,26 @@ export default {
       per_page: null,
       to: null,
       total: null
-    }    
+    },
+    errors: []    
   },
   getters: {
-    customers(state) {
-      return state.customers
+    users(state) {
+      return state.users
     }                  
   },
   actions: {
-    getCustomers(context, page){
+    getUsers(context, page){
       let url = null
       if (page == null) {
-        url = '/api/customers'
+        url = '/api/users'
       } else {
-        url = `/api/customers?page=${page}`
+        url = `/api/users?page=${page}`
       }
       axios.get(url)
       .then(response => {
         console.log(response.data)
-        context.commit('getCustomers', response.data)
+        context.commit('getUsers', response.data)
       })
       .catch(err => console.log(err))
     },
@@ -48,15 +49,15 @@ export default {
     }      
   },
   mutations: {
-    getCustomers(state, customers){
-      state.customers = customers.data
-      state.links = customers.links
-      state.meta = customers.meta        
+    getUsers(state, users){
+      state.users = users.data
+      state.links = users.links
+      state.meta = users.meta        
     },
-    paginate(state, customers) {
-      state.customers = customers.data
-      state.links = customers.links
-      state.meta = customers.meta    
+    paginate(state, users) {
+      state.users = users.data
+      state.links = users.links
+      state.meta = users.meta    
     }     
   }
 }

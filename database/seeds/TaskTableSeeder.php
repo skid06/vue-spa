@@ -25,7 +25,7 @@ class TaskTableSeeder extends Seeder
                 'contact_phone' => $faker->phoneNumber,
                 'cost' => $faker->numberBetween(0,100),
                 'website' => $faker->url,
-                'customer_id' => $faker->numberBetween(1,25),
+                'user_id' => $faker->numberBetween(1,25),
                 'created_at' => $faker->dateTimeBetween($startDate = '-5 years', $endDate = 'now')
             ]);
         }

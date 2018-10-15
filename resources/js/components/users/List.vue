@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card-title class="info">
-      List of Projects
+      List of Users
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -13,21 +13,20 @@
     </v-card-title> 
     <v-data-table
       :headers="headers"
-      :items="tasks"
+      :items="users"
       class="elevation-1"
       :search="search"
     >
       <template slot="items" slot-scope="props">
         <td>{{ props.item.name }}</td>
-        <td class="text-xs-right">{{ props.item.status }}</td>
-        <td class="text-xs-right">{{ props.item.contact_phone }}</td>
-        <td class="text-xs-right">{{ props.item.contact_name }}</td>
-        <td class="text-xs-right">{{ props.item.notes[0].notes }}</td>
-        <td class="text-xs-right"><router-link :to="`/tasks/${props.item.id}`"><v-icon>pageview</v-icon></router-link></td>
+        <td class="text-xs-right">{{ props.item.name }}</td>
+        <td class="text-xs-right">{{ props.item.email }}</td>
+        <td class="text-xs-right">{{ props.item.phone }}</td>
+        <td class="text-xs-right"><router-link :to="`/users/${props.item.id}`"><v-icon>pageview</v-icon></router-link></td>
       </template>  
       <template slot="footer">
         <td colspan="100%">
-          <v-btn fab dark color="indigo" :to="{ path: 'tasks/new' }">
+          <v-btn fab dark color="indigo" :to="{ path: 'users/new' }">
             <v-icon dark>add</v-icon>
           </v-btn>
         </td>
@@ -36,44 +35,41 @@
         Your search for "{{ search }}" found no results.
       </v-alert>      
     </v-data-table>  
-  </div> 
+  </div>   
 </template>
 
 <script>
-  import { mapGetters, mapActions, mapMutations } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
   export default {
-    name: 'list-tasks',
-    data(){
+    name: 'list',
+    data() {
       return {
         search: '',
         headers: [
           { text: 'Name', value: 'name', align: 'center' },
-          { text: 'Status', value: 'status', align: 'center' },
-          { text: 'Contact Name', value: 'contact_name', align: 'center' },
-          { text: 'Contact Phone', value: 'contact_phone', align: 'center' },
-          { text: 'Notes', value: 'notes', align: 'center' },
+          { text: 'Email', value: 'email', align: 'center' },
+          { text: 'Phone', value: 'phone', align: 'center' },
           { text: 'View', value: 'view', align: 'center' },
-        ]        
+        ]           
       }
     },
     methods: {
       ...mapActions([
-        'getTasks',
+        'getUsers',
         'paginate'
-      ]),
-      paginationItems() {
-        return this.$store.state.task.meta.total
-      }
+      ])
     },
     computed: {
       ...mapGetters([
-        'tasks',
-        'paginationItem',
-        'tasksLength'
+        'users'
       ])
     },    
     mounted() {
-      this.getTasks()
+      this.getUsers()
+
+      if(!this.users.length) {
+        return
+      }      
     }
   }
 </script>

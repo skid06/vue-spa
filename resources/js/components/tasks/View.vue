@@ -1,38 +1,80 @@
 <template>
-  <div class="task-view">
-    <!-- <div class="user-img">
-      <img src="https://www.scottsdaleazestateplanning.com/wp-content/uploads/2018/01/user.png" alt="">
-    </div> -->
-    <div class="user-info">
-      <table class="table">
-        <tr>
-          <th>ID</th>
-          <td>{{ task.id }}</td>
-        </tr>
-        <tr>
-          <th>Project Name</th>
-          <td>{{ task.name }}</td>
-        </tr>
-        <tr>
-          <th>Status</th>
-          <td>{{ task.status }}</td>
-        </tr>
-        <tr>
-          <th>Contact Name</th>
-          <td>{{ task.contact_name }}</td>
-        </tr>  
-        <tr>
-          <th>Contact Phone</th>
-          <td>{{ task.contact_phone }}</td>
-        </tr>                              
-      </table>
-      <ul>
-        <li v-for="note in task.notes" :key="note.id" >{{ note.notes }} by: {{ note.customer.name }}</li>
-      </ul>
-      <router-link to="/tasks">Back</router-link>
-    </div>
-    
-  </div>
+  <div>
+    <v-card class="elevation-12">
+      <v-toolbar dark color="primary">
+        <v-toolbar-title>Edit Project</v-toolbar-title>
+      </v-toolbar>
+      <v-card-text>
+        <form>
+          <div slot="content">
+            <v-text-field
+              label="Project Name"
+              v-model="task.name"
+              :rules="[required]">
+            </v-text-field>
+            <v-text-field
+              label="Assigned To"
+              v-model="task.user.name"
+              disabled>
+            </v-text-field>
+            <v-text-field
+              label="Status"
+              v-model="task.status"
+              :rules="[required]">
+            </v-text-field>
+            <v-text-field
+              label="Contact Name"
+              v-model="task.contact_name"
+              :rules="[required]">
+            </v-text-field>
+            <v-text-field
+              label="Contact Phone"
+              v-model="task.contact_phone"
+              :rules="[required]">
+            </v-text-field>
+          </div>
+          <v-card>
+            <v-card-title primary-title>
+              <h3 class="headline mb-0">Notes</h3>
+            </v-card-title>
+            <v-list two-line>
+              <template v-for="(item, index) in items.notes">
+                <v-subheader
+                  v-if="item.header"
+                  :key="item.header"
+                >
+                  Notes
+                </v-subheader>
+
+                <v-divider
+                  v-else-if="item.divider"
+                  :inset="item.inset"
+                  :key="index"
+                ></v-divider>
+
+                <v-list-tile
+                  v-else
+                  :key="item.title"
+                  avatar
+                  @click=""
+                >
+                  <!-- <v-list-tile-avatar>
+                    <img :src="item.avatar">
+                  </v-list-tile-avatar> -->
+
+                  <v-list-tile-content>
+                    <!-- <v-list-tile-title v-html="item.user.name"></v-list-tile-title> -->
+                    <v-list-tile-sub-title><span class="text--primary">{{ item.notes }} </span> on {{ item.created_at | moment("dddd, MMMM Do YYYY") }} </v-list-tile-sub-title>
+                    <v-list-tile-sub-title>by: {{ item.user.name }}</v-list-tile-sub-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+              </template>
+            </v-list>
+            </v-card>      
+        </form>
+      </v-card-text>
+    </v-card>
+  </div>     
 </template>
 <script>
   import {mapGetters, mapActions} from 'vuex'
@@ -41,6 +83,7 @@
     data() {
       return {
         task: {},
+        items: []
       }
     },    
     computed: {
@@ -52,6 +95,7 @@
       if(this.tasks.length) {
         // console.log('if')
         this.task = this.tasks.find(task => task.id == this.$route.params.id)
+        this.items = this.task
         // console.log(this.task)
       }
       else{
@@ -60,6 +104,7 @@
         .then(response => {
           console.log(response.data)
           this.task = response.data
+          this.items = this.task
           console.log(this.task)
         })
         .catch(err => {
@@ -72,19 +117,4 @@
 </script>
 
 <style scoped>
-.task-view {
-  display: flex;
-  align-items: center;
-}
-.user-img {
-  flex: 1;
-}
-.user-img img {
-  max-width: 160px;
-}
-.user-info {
-  flex: 3;
-  overflow-x: scroll;
-}
-
 </style>

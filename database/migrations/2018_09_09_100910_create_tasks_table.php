@@ -21,7 +21,7 @@ class CreateTasksTable extends Migration
             $table->string('contact_phone');
             $table->string('cost');
             $table->string('website');
-            $table->integer('customer_id');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }

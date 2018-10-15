@@ -17,7 +17,11 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 
+        'email', 
+        'password',
+        'phone',
+        'website'
     ];
 
     /**
@@ -28,6 +32,14 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function notes(){
+        return $this->hasMany(Note::class);
+    }
+
+    public function tasks(){
+        return $this->hasMany(Task::class);
+    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

@@ -1,10 +1,10 @@
 import Home from './components/Home'
 import Login from './components/auth/Login'
 
-import CustomerMain from './components/customers/Main'
-import CustomersList from './components/customers/List'
-import NewCustomer from './components/customers/New.vue'
-import Customer from './components/customers/View'
+import UserMain from './components/users/Main'
+import UsersList from './components/users/List'
+import NewUser from './components/users/New.vue'
+import User from './components/users/View'
 
 import TaskMain from './components/tasks/Main'
 import TasksList from './components/tasks/List'
@@ -24,23 +24,23 @@ export const routes = [
     component: Login
   },
   {
-    path: '/customers',
-    component: CustomerMain,
+    path: '/users',
+    component: UserMain,
     meta: {
       requiresAuth: true
     },
     children: [
       {
         path: '/',
-        component: CustomersList
+        component: UsersList
       },
       {
         path: 'new',
-        component: NewCustomer
+        component: NewUser
       },
       {
         path: ':id',
-        component: Customer
+        component: User
       }
     ]
   },

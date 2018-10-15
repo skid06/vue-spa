@@ -21,7 +21,7 @@ class NoteTableSeeder extends Seeder
             Note::create([
                 'task_id' => $faker->numberBetween(1, 50),
                 'notes' => $faker->sentence,
-                'customer_id' => $faker->numberBetween(1,25),
+                'user_id' => $faker->numberBetween(1,25),
                 'created_at' => $faker->dateTimeBetween($startDate = '-5 years', $endDate = 'now')
             ]);
         }

@@ -30,7 +30,10 @@
     },
     "dependencies": {
         "validate.js": "^0.12.0",
+        "vee-validate": "^2.1.0-beta.11",
+        "vue-moment": "^4.0.0",
         "vue-router": "^3.0.1",
+        "vuetify": "^1.2.9",
         "vuex": "^3.0.1"
     }
 }

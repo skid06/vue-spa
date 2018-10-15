@@ -15,11 +15,15 @@ class Task extends Model
         'cost'
     ];
     
-    public function customer(){
-        return $this->belongsTo(Customer::class);
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 
     public function notes(){
         return $this->hasMany(Note::class);
     }
+
+    public function latestNote(){
+        return $this->hasMany(Note::class)->orderBy('created_at', 'DESC')->first();
+    }    
 }

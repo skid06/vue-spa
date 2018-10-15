@@ -8,13 +8,14 @@
         <title>Laravel</title>
 
         <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
+        <!-- <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css"> -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
     </head>
     <body> 
-        <div id="app">
-            <main-app />         
-        </div>
-        <script src="{{ asset('js/app.js') }}"></script>
+      <div id="app">
+        <MainContainer />
+      </div>
+      <script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>

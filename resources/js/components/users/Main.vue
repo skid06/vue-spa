@@ -5,11 +5,11 @@
         <router-view></router-view>
       </v-flex>    
     </v-layout>    
-  </v-container>   
+  </v-container>    
 </template>
 
 <script>
   export default {
-    name: 'TaskMain'
+    name: 'customer-main'
   }
 </script>
